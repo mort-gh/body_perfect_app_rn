@@ -1,30 +1,26 @@
 {
   "expo": {
-    "name": "Blank Template",
+    "name": "PerfectBody_App",
     "slug": "PerfectBody_App",
-    "privacy": "public",
+    "privacy": "unlisted",
     "sdkVersion": "36.0.0",
-    "platforms": [
-      "ios",
-      "android",
-      "web"
-    ],
+    "platforms": ["ios", "android", "web"],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/logo-body.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/logo-body.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
-    }
+    },
+    "description": "",
+    "githubUrl": "https://github.com/andrusha52/PerfectBody_App"
   }
 }

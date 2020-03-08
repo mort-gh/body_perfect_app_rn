@@ -7,8 +7,7 @@ import CulcScreen from "../components/CulcScreen";
 const LoginPage = props => {
   return (
     <>
-      <CulcScreen props={props} />
-      <Register formName="Login" register={props.login} />
+      <Register formName="Войти" register={props.login} />
     </>
   );
 };

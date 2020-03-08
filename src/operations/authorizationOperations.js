@@ -3,7 +3,7 @@ import axios from "axios";
 export const register = (registerData, { userData }) => async dispatch => {
   const getPost = { ...registerData, userData };
 
-  const data = await axios.post(
+  await axios.post(
     "https://slim-moms.goit.co.ua/api/v1/register",
     getPost,
     {
@@ -11,12 +11,12 @@ export const register = (registerData, { userData }) => async dispatch => {
         "Content-Type": "application/json"
       }
     }
-  );
-  dispatch({ type: "REGISTER_SUCCESS", payload: data.data.user });
+  ).then(data=> dispatch({ type: "REGISTER_SUCCESS", payload: data.data.user }))
+  .catch(data=>dispatch({type:"ERROR_REG"}))
 };
 
 export const login = registerData => async dispatch => {
-  const data = await axios.post(
+ await axios.post(
     "https://slim-moms.goit.co.ua/api/v1/login",
     registerData,
     {
@@ -24,13 +24,13 @@ export const login = registerData => async dispatch => {
         "Content-Type": "application/json"
       }
     }
-  );
+  ).then(data=>   dispatch({ type: "LOGIN_SUCCESS", payload: data.data.user }))
+  .catch(data=>dispatch({type:"ERROR_LOGIN"}))
 
-  dispatch({ type: "LOGIN_SUCCESS", payload: data.data.user });
+
 };
 
 export const logout = () => async dispatch => {
-  console.log("LOGOUT_SUCCESS");
   dispatch({ type: "LOGOUT_SUCCESS" });
 };
 

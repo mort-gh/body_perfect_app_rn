@@ -5,11 +5,9 @@ import { register } from "../operations/authorizationOperations";
 import CulcScreen from "../components/CulcScreen";
 
 const RegisterPage = props => {
-  console.log("OOOLOOOLO", props);
   return (
     <>
-      <CulcScreen props={props} />
-      <Register formName="Register" register={props.register} />
+      <Register formName="Регистрация" register={props.register} />
     </>
   );
 };

@@ -34,13 +34,11 @@ export const screenOptions = title => {
               [
                 {
                   text: "Отмена",
-                  onPress: () => console.log("Отмена - выход из приложения"),
                   style: "cancel"
                 },
                 {
                   text: "Выйти",
                   onPress: () => {
-                    console.log("Подтверждение - выход из приложения");
                     dispatch(logout());
                   },
                   style: "destructive"

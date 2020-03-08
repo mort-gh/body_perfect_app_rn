@@ -4,7 +4,6 @@ import PureChart from "react-native-pure-chart";
 import { Ionicons } from "@expo/vector-icons";
 
 export const Chart = ({ history }) => {
-  console.log("history", history);
   return (
     <View style={styles.wrap}>
       <Text style={styles.headerTitle}>

@@ -1,5 +1,6 @@
-import React, { Component } from "react";
-import { View, ScrollView, StyleSheet } from "react-native";
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { ScrollView, RefreshControl } from "react-native";
 import {
   userDailyNormaInfo,
   getCalloriesByCurrentDay,
@@ -9,71 +10,94 @@ import { AppLoader } from "../ui/AppLoader";
 import { Statistics } from "./Statistics";
 import { Chart } from "./Chart";
 
-class AchivmentsPage extends Component {
-  state = {
-    tableTitle: ["Дневная норма", "Употреблено", "Осталось", "% от нормы"],
-    tableData: [],
-    loading: true,
-    userName: "",
-    history: []
-  };
+export const AchivmentsPage = () => {
+  const [tableTitle, setTableTitle] = useState([]);
+  const [tableData, setTableData] = useState([]);
+  const [history, setHistory] = useState([]);
+  const [isLoad, setIsLoad] = useState(true);
+  const [refresh, setRefresh] = useState(false);
 
-  async componentDidMount() {
-    const dailyNorm = await userDailyNormaInfo();
-    const dailyConsumed = await getCalloriesByCurrentDay();
+  const token = useSelector(state => state.auth.token);
+  const reload = useSelector(state => state.auth.reload);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    getStateValues();
+  }, [reload]);
+
+  const getStateValues = async () => {
+    const dailyNorm = await userDailyNormaInfo(token);
+    const dailyConsumed = await getCalloriesByCurrentDay(token);
     const dailyBalance = (await dailyNorm) - dailyConsumed;
     const percentage = (await 100) / (dailyNorm / dailyConsumed);
-    const history = await getHistoryUpToDate();
-
+    const history = await getHistoryUpToDate(token);
     const labels = history.data.graphData.labels;
     const eatedProducts = history.data.graphData.eatedProducts;
     const dailyRate = history.data.graphData.dailyRate;
 
-    const historyForChart = [
+    const tableTitleValues = [
+      "Дневная норма",
+      "Употреблено",
+      "Осталось",
+      "% от нормы"
+    ];
+
+    const tableDataValues = await [
+      [`${Math.round(dailyNorm)} ккал`],
+      [`${Math.round(dailyConsumed)} ккал`],
+      [`${Math.round(dailyBalance)} ккал`],
+      [`${Math.round(percentage)} %`]
+    ];
+
+    const historyForChart = await [
       {
         seriesName: "series1",
-        data: this.putValuesToChart(labels, eatedProducts).reverse(),
+        data: await putValuesToChart(labels, eatedProducts).reverse(),
         color: "#fc842c"
       },
       {
         seriesName: "series2",
-        data: this.putValuesToChart(labels, dailyRate).reverse(),
+        data: await putValuesToChart(labels, dailyRate).reverse(),
         color: "#284060"
       }
     ];
 
-    await this.setState({
-      tableData: [
-        [`${Math.round(dailyNorm)} ккал`],
-        [`${Math.round(dailyConsumed)} ккал`],
-        [`${Math.round(dailyBalance)} ккал`],
-        [`${Math.round(percentage)} %`]
-      ],
-      loading: false,
-      history: historyForChart
-    });
-  }
+    setTableTitle(tableTitleValues);
+    setTableData(tableDataValues);
+    setHistory(historyForChart);
+    setIsLoad(false);
 
-  putValuesToChart = (x, y) =>
+    dispatch({ type: "STOPLOAD_PAGE" });
+  };
+
+  const putValuesToChart = (x, y) =>
     x.map((value, idx) => ({
       x: value,
       y: Number(y[idx])
     }));
 
-  render() {
-    const { tableTitle, tableData, history } = this.state;
-    return (
-      <ScrollView>
-        {this.state.loading ? (
-          <AppLoader />
-        ) : (
-          <Statistics tableTitle={tableTitle} tableData={tableData} />
-        )}
-        <Chart history={history} />
-        <View></View>
-      </ScrollView>
-    );
-  }
-}
+  const refreshTable = async () => {
+    await setRefresh(true);
+    await getStateValues();
+    await setRefresh(false);
+  };
 
-export default AchivmentsPage;
+  return (
+    <ScrollView
+      refreshControl={
+        <RefreshControl
+          colors={["#1e90ff"]}
+          refreshing={refresh}
+          onRefresh={refreshTable}
+        />
+      }
+    >
+      {isLoad ? (
+        <AppLoader />
+      ) : (
+        <Statistics tableTitle={tableTitle} tableData={tableData} />
+      )}
+      <Chart history={history} />
+    </ScrollView>
+  );
+};

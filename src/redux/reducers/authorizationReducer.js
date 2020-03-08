@@ -1,4 +1,5 @@
 import { combineReducers } from "redux";
+import { AsyncStorage } from "react-native";
 
 const isAuthenticated = (state = false, action) => {
   switch (action.type) {
@@ -35,15 +36,32 @@ const token = (state = null, action) => {
     case "POST_SUCCESS":
       return action.payload.token;
     case "LOGOUT_SUCCESS":
-      console.log("LOGOUT_SUCCESS");
       return null;
+
     default:
       return state;
   }
 };
 
-const error = (state = null, action) => {
+const error = (state = {logError:false,regError:false}, action) => {
   switch (action.type) {
+    case "ERROR_LOGIN":
+      return {...state, logError:true};
+      case "ERROR_REG":
+    return {...state, regError:true};
+    case "CLEARE_ERROR":
+      return {logError:false, regError:false}
+    default:
+      return state;
+  }
+};
+
+const reload = (state = false, action) => {
+  switch (action.type) {
+    case "RELOAD_PAGE":
+      return (state = true);
+    case "STOPLOAD_PAGE":
+      return (state = false);
     default:
       return state;
   }
@@ -53,5 +71,6 @@ export default combineReducers({
   isAuthenticated,
   user,
   token,
-  error
+  error,
+  reload
 });

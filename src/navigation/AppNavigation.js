@@ -8,15 +8,17 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 // screens
-import { DiaryScreen } from "../screens/DiaryScreen";
-import CulcScreen from "../components/CulcScreen";
+import DiaryScreen from "../screens/DiaryScreen";
 import { ProgressScreen } from "../screens/ProgressScreen";
 import InitialInfo from "../components/initialInfo/initialInfo";
 import RegisterPage from "../pages/RegisterPage";
 import LoginPage from "../pages/LoginPage";
+import CalcModalResult from "../components/CalcModalResult";
+import { AuthPage } from "../pages/AuthPage";
 // options
 import { screenOptions } from "./options/screenOptions";
 import { authScreenOptions } from "./options/authScreenOptions";
+import CulcScreen from "../components/CulcScreen";
 
 const StackDiary = createStackNavigator();
 function diaryStackScreen() {
@@ -40,6 +42,12 @@ function calcStackScreen() {
         component={CulcScreen}
         options={screenOptions("Калькулятор")}
       />
+
+      <StackCalc.Screen
+        name="DiaryScreen"
+        component={DiaryScreen}
+        options={screenOptions("Дневник")}
+      />
     </StackCalc.Navigator>
   );
 }
@@ -51,7 +59,25 @@ function authCalcStackScreen() {
       <AuthStackCalc.Screen
         name="CalcScreen"
         component={InitialInfo}
-        options={authScreenOptions("Калькулятор")}
+        options={authScreenOptions("Perfect Body")}
+      />
+
+      <AuthStackCalc.Screen
+        name="Регистрация"
+        component={RegisterPage}
+        options={authScreenOptions("Регистрация")}
+      />
+
+      <AuthStackCalc.Screen
+        name="Результат"
+        component={CalcModalResult}
+        options={authScreenOptions("Результат")}
+      />
+
+      <AuthStackCalc.Screen
+        name="Авторизация"
+        component={AuthPage}
+        options={authScreenOptions("Авторизация")}
       />
     </AuthStackCalc.Navigator>
   );
@@ -96,6 +122,29 @@ function registerStackScreen() {
   );
 }
 
+const AuthStack = createStackNavigator();
+function authStack() {
+  return (
+    <StackRegister.Navigator>
+      <StackRegister.Screen
+        name="Авторизация"
+        component={AuthPage}
+        options={authScreenOptions("Авторизация")}
+      />
+      <StackRegister.Screen
+        name="Регистрация"
+        component={RegisterPage}
+        options={authScreenOptions("Регистрация")}
+      />
+      <StackRegister.Screen
+        name="Войти"
+        component={LoginPage}
+        options={authScreenOptions("Войти")}
+      />
+    </StackRegister.Navigator>
+  );
+}
+
 const AppTabBottomNavigator =
   Platform.OS === "ios"
     ? createBottomTabNavigator()
@@ -106,6 +155,26 @@ const bottomTabOptions = (label, icon) => ({
   tabBarIcon: info => <Ionicons name={icon} size={25} color={info.color} />
 });
 
+// const authBottomTab = (
+//   <>
+//     <AppTabBottomNavigator.Screen
+//       name="calcStackScreen"
+//       component={authCalcStackScreen}
+//       options={bottomTabOptions("Калькулятор", "ios-calculator")}
+//     />
+//     <AppTabBottomNavigator.Screen
+//       name="loginStackScreen"
+//       component={loginStackScreen}
+//       options={bottomTabOptions("Войти", "ios-log-in")}
+//     />
+//     <AppTabBottomNavigator.Screen
+//       name="registerStackScreen"
+//       component={registerStackScreen}
+//       options={bottomTabOptions("Регистрация", "ios-person-add")}
+//     />
+//   </>
+// );
+
 const authBottomTab = (
   <>
     <AppTabBottomNavigator.Screen
@@ -114,14 +183,9 @@ const authBottomTab = (
       options={bottomTabOptions("Калькулятор", "ios-calculator")}
     />
     <AppTabBottomNavigator.Screen
-      name="loginStackScreen"
-      component={loginStackScreen}
-      options={bottomTabOptions("Войти", "ios-log-in")}
-    />
-    <AppTabBottomNavigator.Screen
-      name="registerStackScreen"
-      component={registerStackScreen}
-      options={bottomTabOptions("Регистрация", "ios-person-add")}
+      name="AuthStack"
+      component={authStack}
+      options={bottomTabOptions("Авторизация", "ios-log-in")}
     />
   </>
 );
@@ -147,7 +211,6 @@ const appBottomTab = (
 );
 
 function AppNavigation(props) {
-  console.log("props.auth.isAuthenticated", props.auth.isAuthenticated);
   return (
     <NavigationContainer>
       <AppTabBottomNavigator.Navigator
