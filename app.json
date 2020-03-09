@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "PerfectBody_App",
-    "slug": "PerfectBody_App",
+    "name": "perfect_body_app",
+    "slug": "perfect_body_app",
     "privacy": "unlisted",
     "sdkVersion": "36.0.0",
     "platforms": ["ios", "android", "web"],
@@ -9,7 +9,7 @@
     "orientation": "portrait",
     "icon": "./assets/logo-body.png",
     "splash": {
-      "image": "./assets/logo-body.png",
+      "image": "./src/image/pb_splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
