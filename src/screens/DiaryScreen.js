@@ -15,7 +15,6 @@ import { SwipeListView } from "react-native-swipe-list-view";
 import { AppLoader } from "../components/ui/AppLoader";
 import SearchAdd from "../components/diary/SearchAdd";
 import CalendarAdd from "../components/diary/CalendarAdd";
-import { FlatGrid } from "react-native-super-grid";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 function yyyymmdd() {

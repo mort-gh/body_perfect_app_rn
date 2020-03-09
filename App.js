@@ -53,7 +53,7 @@ class App extends Component {
       <Provider store={store}>
         {this.state.appHasLoaded ? (
           <Animated.Image
-            source={require("./src/image/loadingScreen_PB.jpg")}
+            source={require("./src/image/pb_loading1.jpg")}
             resizeMode="cover"
             style={{
               position: "absolute",
