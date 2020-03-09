@@ -6,7 +6,9 @@ import {
   ScrollView,
   StyleSheet,
   Alert,
-  TouchableHighlight
+  TouchableHighlight,
+  RefreshControl,
+  StatusBar
 } from "react-native";
 import { connect } from "react-redux";
 import axios from "axios";
@@ -39,7 +41,8 @@ class DiaryScreen extends Component {
     dayIngredients: [],
     dataURL: Date.now(),
     preLoader: false,
-    currentlyOpenSwipeable: null
+    currentlyOpenSwipeable: null,
+    refresh: false
   };
 
   componentDidMount() {
@@ -115,6 +118,12 @@ class DiaryScreen extends Component {
       { cancelable: false }
     );
   };
+  refreshTable=async()=>{
+   await this.setState({refresh:true});
+   await   this.getDayIngredients();
+   await this.setState({refresh:false})
+
+  }
 
   render() {
     const { currentlyOpenSwipeable } = this.state;
@@ -148,6 +157,10 @@ class DiaryScreen extends Component {
 
     return (
       <View>
+         <StatusBar backgroundColor="blue" barStyle="dark-content" />
+           
+
+    
         {this.state.preLoader && <AppLoader />}
 
         <SearchAdd
@@ -174,6 +187,7 @@ class DiaryScreen extends Component {
 
         <View style={styles.listWrap}>
           <View>
+  
             {this.state.dayIngredients.length < 1 ? (
               <Text>Здесь будет отображаться Ваш рацион!</Text>
             ) : (
@@ -184,8 +198,14 @@ class DiaryScreen extends Component {
                   <Text style={styles.aboutText}>Граммы</Text>
                 </View>
 
-                <ScrollView style={{ marginBottom: 305 }}>
-                  <SwipeListView
+                <ScrollView style={{ marginBottom: 305 }}    refreshControl={
+        <RefreshControl
+          colors={["#1e90ff"]}
+          refreshing={this.state.refresh}
+          onRefresh={this.refreshTable}
+        />
+      }>
+                  <SwipeListView style={{marginBottom: 162}}
                     itemDimension={200}
                     data={this.state.dayIngredients}
                     renderItem={({ item }) => (
@@ -231,6 +251,7 @@ class DiaryScreen extends Component {
               </>
             )}
           </View>
+      
         </View>
 
         {this.state.calendarIsOpen ? (

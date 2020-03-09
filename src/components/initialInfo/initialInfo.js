@@ -8,7 +8,8 @@ import {
   View,
   Animated,
   Easing,
-  Alert
+  Alert,
+  StatusBar
 } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 import { userData } from "../../redux/act";
@@ -143,6 +144,8 @@ class InitialInfo extends Component {
 
     return (
       <>
+               <StatusBar backgroundColor="blue" barStyle="dark-content" />
+
         {errorInForm &&
           Alert.alert(
             "Некорректные данные",

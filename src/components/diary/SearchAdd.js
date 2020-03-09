@@ -10,8 +10,6 @@ import {
 
 import SearchableDropdown from "react-native-searchable-dropdown";
 import axios from "axios";
-import { FlatGrid } from "react-native-super-grid";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 class SearchAdd extends Component {
   constructor(props) {
@@ -143,53 +141,36 @@ class SearchAdd extends Component {
                   </View>
                 </View>
 
-                <TouchableOpacity
-                  id={item.value}
-                  style={SearchAddStyle.buttonCancel}
-                  onPress={() =>
-                    setTimeout(() => {
-                      this.onRemoveItem(item.value);
-                    }, 0)
-                  }
-                >
-                  {/* <MaterialCommunityIcons
-                    name="delete"
-                    size={15}
-                    color="white"
-                  /> */}
-                  <Text style={SearchAddStyle.buttonTextCancel}>Отменить</Text>
-                </TouchableOpacity>
+                <View style={SearchAddStyle.buttonsContainer}>
+                  <TouchableOpacity
+                    id={item.value}
+                    style={SearchAddStyle.buttonCancel}
+                    onPress={() =>
+                      setTimeout(() => {
+                        this.onRemoveItem(item.value);
+                      }, 0)
+                    }
+                  >
+                    <Text style={SearchAddStyle.buttonTextCancel}>
+                      Отменить
+                    </Text>
+                  </TouchableOpacity>
 
-                <View style={{ alignItems: "center" }}>
-                  {this.state.selectedItems.length > 0 && (
-                    <TouchableOpacity
-                      onPress={this.addIngredientsToDATA}
-                      style={SearchAddStyle.button}
-                    >
-                      {/* <MaterialCommunityIcons
-                        name="plus"
-                        size={31}
-                        color="white"
-                      /> */}
-                      <Text style={SearchAddStyle.buttonText}>Добавить</Text>
-                    </TouchableOpacity>
-                  )}
+                  <View style={{ alignItems: "center" }}>
+                    {this.state.selectedItems.length > 0 && (
+                      <TouchableOpacity
+                        onPress={this.addIngredientsToDATA}
+                        style={SearchAddStyle.button}
+                      >
+                        <Text style={SearchAddStyle.buttonText}>Добавить</Text>
+                      </TouchableOpacity>
+                    )}
+                  </View>
                 </View>
               </View>
             )}
             keyExtractor={item => item.value}
           />
-
-          {/* <View style={{ alignItems: "center" }}>
-            {this.state.selectedItems.length > 0 && (
-              <TouchableOpacity
-                style={SearchAddStyle.btnAdd}
-                onPress={this.addIngredientsToDATA}
-              >
-                <MaterialCommunityIcons name="plus" size={31} color="white" />
-              </TouchableOpacity>
-            )}
-          </View> */}
         </View>
       </>
     );
@@ -295,7 +276,7 @@ const SearchAddStyle = StyleSheet.create({
     backgroundColor: "orange",
     paddingVertical: 10,
     paddingHorizontal: 20,
-    marginHorizontal: 30,
+    marginHorizontal: 10,
     marginVertical: 20,
     borderRadius: 20
   },
@@ -303,7 +284,7 @@ const SearchAddStyle = StyleSheet.create({
     backgroundColor: "white",
     paddingVertical: 10,
     paddingHorizontal: 20,
-    marginHorizontal: 30,
+    marginHorizontal: 10,
     marginVertical: 20,
     borderRadius: 20,
     borderColor: "orange",
@@ -316,5 +297,8 @@ const SearchAddStyle = StyleSheet.create({
   buttonTextCancel: {
     color: "orange",
     fontFamily: "open-bold"
+  },
+  buttonsContainer: {
+    flexDirection: "row"
   }
 });

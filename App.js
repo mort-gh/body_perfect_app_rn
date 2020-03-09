@@ -1,9 +1,8 @@
-import React, { Component, useState } from "react";
-import { Provider, connect } from "react-redux";
+import React, { Component } from "react";
+import { Provider } from "react-redux";
 import { AppLoading } from "expo";
 import { Animated, Easing } from "react-native";
 import { store } from "./src/redux/store";
-import { localStorage } from "./src/redux/act";
 import { fontsLoad } from "./src/components/ui/fonts";
 import AppNavigation from "./src/navigation/AppNavigation";
 
